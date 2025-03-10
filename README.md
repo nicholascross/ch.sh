@@ -24,6 +24,14 @@ brew tap nicholascross/promptly && brew install promptly
 
 Installation
 ------------
+
+```sh
+brew tap nicholascross/ch.sh
+brew install ch
+```
+
+Manual Installation
+-------------------
 1. Clone or download the repository to your local machine.
 2. Ensure that fzf, glow, and promptly are installed and available in your PATH.
 3. Copy the script `ch` to a directory included in your PATH (e.g., `/usr/local/bin/`) and make sure it is executable:
