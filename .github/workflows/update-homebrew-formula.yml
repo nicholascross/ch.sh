@@ -1,0 +1,93 @@
+name: Update Homebrew Formula
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  update-homebrew:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the ch.sh repository
+        uses: actions/checkout@v4
+
+      - name: Get the latest release tag
+        id: get_tag
+        run: echo "LATEST_TAG=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
+
+      - name: Generate SHA256 checksum
+        run: |
+          TARBALL_URL="https://github.com/nicholascross/ch.sh/archive/refs/tags/${{ env.LATEST_TAG }}.tar.gz"
+          curl -L -o ch.sh.tar.gz "$TARBALL_URL"
+          echo "SHA256=$(shasum -a 256 ch.sh.tar.gz | awk '{print $1}')" >> $GITHUB_ENV
+          rm ch.sh.tar.gz
+
+      - name: Setup SSH for pushing to Homebrew tap
+        env:
+          HOMEBREW_DEPLOY_KEY: ${{ secrets.HOMEBREW_DEPLOY_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$HOMEBREW_DEPLOY_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Clone the Homebrew tap repository
+        run: |
+          git clone git@github.com:nicholascross/homebrew-ch.sh.git homebrew-tap
+          cd homebrew-tap
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Ensure Formula directory exists
+        run: mkdir -p homebrew-tap/Formula
+
+      - name: Update Homebrew formula
+        run: |
+          FORMULA_PATH="homebrew-tap/Formula/ch.rb"
+          cat > "$FORMULA_PATH" <<EOF
+          class Ch < Formula
+            desc "Cheatsheet generator with markdown rendering"
+            homepage "https://github.com/nicholascross/ch.sh"
+            url "https://github.com/nicholascross/ch.sh/archive/refs/tags/\${LATEST_TAG}.tar.gz"
+            sha256 "\${SHA256}"
+            version "\${LATEST_TAG}"
+
+            depends_on "glow"
+            depends_on "nicholascross/promptly/promptly"
+            depends_on "fzf"
+
+            def install
+              bin.install "ch.sh" => "ch"
+              pkgshare.install "theme.json"
+            end
+
+            def post_install
+              config_path = File.join(ENV["HOME"], ".config", "ch.sh")
+              mkdir_p config_path
+              cp pkgshare/"theme.json", File.join(config_path, "theme.json")
+            end
+
+            test do
+              assert_predicate bin/"ch", :executable?
+              assert_match "Usage", shell_output("\#{bin}/ch --help")
+            end
+
+            def caveats
+              <<~EOS
+                A default theme has been installed to:
+                  \#{ENV["HOME"]}/.config/ch.sh/theme.json
+
+                You can edit this file to customize your theme.
+              EOS
+            end
+          end
+          EOF
+          echo "Homebrew formula updated"
+
+      - name: Commit and push changes to Homebrew tap
+        run: |
+          cd homebrew-tap
+          git add Formula/ch.rb
+          git commit -m "Update ch.sh formula to version \${LATEST_TAG}"
+          git push origin main
