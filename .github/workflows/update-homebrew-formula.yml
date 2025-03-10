@@ -73,7 +73,7 @@ jobs:
                   ~/.config/ch.sh/theme.json
 
                 If this file doesn't exist it will use the default theme
-                  $(brew --prefix ch)/share/ch/theme.json
+                  \$(brew --prefix ch)/share/ch/theme.json
               EOS
             end
           end
