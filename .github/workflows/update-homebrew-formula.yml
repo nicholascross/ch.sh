@@ -58,10 +58,10 @@ jobs:
             depends_on "fzf"
 
             def install
-              bin.install "ch.sh" => "ch"
+              bin.install "ch" => "ch"
               pkgshare.install "theme.json"
             end
-
+  
             def post_install
               config_path = File.join(ENV["HOME"], ".config", "ch.sh")
               mkdir_p config_path
