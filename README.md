@@ -4,10 +4,10 @@ ch is a command-line utility that allows you to generate and view concise cheats
 
 Features
 --------
-• Generates cheatsheets on demand for specified topics.
-• Uses interactive selection via fzf to clarify ambiguous topics.
-• Displays cheatsheets in a visually appealing format using Glow with a custom theme.
-• Caches generated cheatsheets in your configuration directory for quick future access.
+- Generates cheatsheets on demand for specified topics.
+- Uses interactive selection via fzf to clarify ambiguous topics.
+- Displays cheatsheets in a visually appealing format using Glow with a custom theme.
+- Caches generated cheatsheets in your configuration directory for quick future access.
 
 Requirements
 ------------
@@ -37,15 +37,15 @@ To generate or view a cheatsheet, simply run:
 For example:
    $ ch git
 
-• If a cheatsheet for “git” exists in your configuration directory (~/.config/ch.sh/cheatsheets/), it will be displayed using Glow.
-• Otherwise, the script will first prompt you with clarifying options (using fzf) and then generate a new cheatsheet using promptly.
-• Note: Promptly requires configuration to work with your preferred LLM provider. Follow the configuration instructions here: https://github.com/nicholascross/Promptly/blob/main/Docs/configuration.md
+- If a cheatsheet for “git” exists in your configuration directory (~/.config/ch.sh/cheatsheets/), it will be displayed using Glow.
+- Otherwise, the script will first prompt you with clarifying options (using fzf) and then generate a new cheatsheet using promptly.
+- Note: Promptly requires configuration to work with your preferred LLM provider. Follow the configuration instructions here: https://github.com/nicholascross/Promptly/blob/main/Docs/configuration.md
 
 Configuration
 -------------
-• ch stores its configuration files and generated cheatsheets in your home directory under:
+- ch stores its configuration files and generated cheatsheets in your home directory under:
    ~/.config/ch.sh
-• The custom Glow style (theme.json) is used to display markdown content. Feel free to modify or replace it as needed.
+- The custom Glow style (theme.json) is used to display markdown content. Feel free to modify or replace it as needed.
 
 Contributing
 ------------
