@@ -62,13 +62,6 @@ jobs:
               pkgshare.install "theme.json"
             end
   
-            def post_install
-              require "fileutils"
-              config_path = File.join(ENV["HOME"], ".config", "ch.sh")
-              FileUtils.mkdir_p config_path
-              FileUtils.cp pkgshare/"theme.json", File.join(config_path, "theme.json")
-            end
-  
             test do
               assert_predicate bin/"ch", :executable?
               assert_match "Usage", shell_output("\#{bin}/ch --help")
@@ -76,10 +69,11 @@ jobs:
 
             def caveats
               <<~EOS
-                A default theme has been installed to:
-                  \#{ENV["HOME"]}/.config/ch.sh/theme.json
+                A custom theme can be installed to:
+                  ~/.config/ch.sh/theme.json
 
-                You can edit this file to customize your theme.
+                If this file doesn't exist it will use the default theme
+                  $(brew --prefix ch)/share/ch/theme.json
               EOS
             end
           end

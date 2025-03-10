@@ -20,7 +20,12 @@ if [ "$#" -eq 0 ] || [ "$1" = "--help" ]; then
 fi
 
 cheatsheet_config_dir="$HOME/.config/ch.sh"
-style_file="${cheatsheet_config_dir}/theme.json"
+
+if [ -f "${cheatsheet_config_dir}/theme.json" ]; then
+  style_file="${cheatsheet_config_dir}/theme.json"
+else
+  style_file="$(brew --prefix ch)/share/ch/theme.json"
+fi
 
 # Create the cheatsheet directory if it doesn't exist
 cheatsheet_dir="$HOME/.config/ch.sh/cheatsheets"
