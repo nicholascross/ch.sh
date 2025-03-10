@@ -49,9 +49,9 @@ jobs:
           class Ch < Formula
             desc "Cheatsheet generator with markdown rendering"
             homepage "https://github.com/nicholascross/ch.sh"
-            url "https://github.com/nicholascross/ch.sh/archive/refs/tags/\${LATEST_TAG}.tar.gz"
-            sha256 "\${SHA256}"
-            version "\${LATEST_TAG}"
+            url "https://github.com/nicholascross/ch.sh/archive/refs/tags/${{env.LATEST_TAG}}.tar.gz"
+            sha256 "${{env.SHA256}}"
+            version "${{env.LATEST_TAG}}"
 
             depends_on "glow"
             depends_on "nicholascross/promptly/promptly"
