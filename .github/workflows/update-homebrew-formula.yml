@@ -63,11 +63,12 @@ jobs:
             end
   
             def post_install
+              require "fileutils"
               config_path = File.join(ENV["HOME"], ".config", "ch.sh")
-              mkdir_p config_path
-              cp pkgshare/"theme.json", File.join(config_path, "theme.json")
+              FileUtils.mkdir_p config_path
+              FileUtils.cp pkgshare/"theme.json", File.join(config_path, "theme.json")
             end
-
+  
             test do
               assert_predicate bin/"ch", :executable?
               assert_match "Usage", shell_output("\#{bin}/ch --help")
