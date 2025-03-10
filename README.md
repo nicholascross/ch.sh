@@ -11,10 +11,10 @@ Features
 
 Requirements
 ------------
-• zsh (the script is written in zsh)
-• fzf – for interactive option selection
-• glow – for styling and viewing markdown files
-• promptly – for generating clarifications and cheatsheets via role-based messaging
+- zsh (the script is written in zsh)
+- fzf – for interactive option selection
+- glow – for styling and viewing markdown files
+- promptly – for generating clarifications and cheatsheets via role-based messaging
 
 ```bash
 brew install fzf
